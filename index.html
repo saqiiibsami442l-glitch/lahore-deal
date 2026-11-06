@@ -3,14 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Lahore Deals Store</title>
+<title>SR Brand - Ladies Suits & Men Watches | Cash on Delivery</title>
+<meta name="description" content="SR Brand: ladies suits aur men watches ka best collection. Cash on Delivery poore Pakistan me. WhatsApp pe order karo.">
+<meta name="theme-color" content="#3a0ca3">
+<meta property="og:title" content="SR Brand - Ladies Suits & Men Watches">
+<meta property="og:description" content="Cash on Delivery • Spin karke discount jeeto • WhatsApp pe order karo">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://saqiiibsami442l-glitch.github.io/lahore-deals/banner.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='50' fill='%23ff3d57'/%3E%3Ctext x='50' y='66' text-anchor='middle' font-size='46' font-weight='800' fill='white' font-family='sans-serif'%3ESR%3C/text%3E%3C/svg%3E">
+<!-- Google Search Console wala verification tag yahan paste karna -->
 <style>
 :root{--g:#0b8f5a;--d:#111;--r:#ff3d57}
 *{box-sizing:border-box;margin:0;font-family:system-ui,sans-serif}
 body{background:#f6f6f6;color:var(--d);padding-bottom:70px}
 header{background:linear-gradient(135deg,#111,#3a0ca3);color:#fff;padding:20px 16px;text-align:center}
-header h1{font-size:24px;user-select:none}
-header p{opacity:.85;margin-top:4px;font-size:14px}
+header p{opacity:.85;margin-top:8px;font-size:14px}
+.brand{display:flex;align-items:center;justify-content:center;gap:10px;user-select:none}
+.bn{font-size:26px;font-weight:800;letter-spacing:3px;text-align:left}
+.bt{font-size:12px;opacity:.8;text-align:left}
 #timer{margin:10px 6px 0;background:var(--r);display:inline-block;padding:6px 14px;border-radius:20px;font-weight:700;font-size:14px}
 .ch{display:inline-block;margin-top:10px;background:#25d366;color:#fff;padding:7px 14px;border-radius:20px;font-weight:700;text-decoration:none;font-size:14px}
 .tabs{display:flex;gap:8px;padding:12px;position:sticky;top:0;background:#f6f6f6;z-index:5}
@@ -32,6 +43,9 @@ header p{opacity:.85;margin-top:4px;font-size:14px}
 .row{display:flex;gap:6px}
 .buy{width:100%;padding:11px;border:0;border-radius:10px;background:#25d366;color:#fff;font-weight:700;font-size:15px}
 .b3{padding:11px 12px;border:0;border-radius:10px;background:#3a0ca3;color:#fff;font-weight:700}
+.trust{margin:20px 12px;background:#fff;border-radius:14px;padding:16px;text-align:center;box-shadow:0 2px 8px #0001}
+.trust h3{margin-bottom:8px}
+.trust div{padding:6px 0;font-size:14px;border-top:1px solid #f0f0f0}
 .modal{display:none;position:fixed;inset:0;background:#000b;z-index:20;align-items:center;justify-content:center;padding:14px;overflow:auto}
 .box{background:#fff;border-radius:16px;padding:18px;width:100%;max-width:400px;text-align:center;max-height:96vh;overflow:auto}
 .box input,.box textarea,.box select{width:100%;padding:11px;margin:5px 0;border:1px solid #ccc;border-radius:10px;font-size:15px}
@@ -57,7 +71,10 @@ transition:transform 4s cubic-bezier(.17,.67,.12,1)}
 </head>
 <body>
 <header>
-  <h1 id="logo">🔥 Lahore Deals Store</h1>
+  <div id="logo" class="brand">
+    <svg width="52" height="52" viewBox="0 0 46 46"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff3d57"/><stop offset="1" stop-color="#ffb703"/></linearGradient></defs><circle cx="23" cy="23" r="22" fill="url(#lg)"/><text x="23" y="30" text-anchor="middle" font-size="19" font-weight="800" fill="#fff" font-family="system-ui">SR</text></svg>
+    <div><div class="bn">SR BRAND</div><div class="bt">Style • Watches • Best Price</div></div>
+  </div>
   <p>Ladies Collection & Men Watches • Cash on Delivery</p>
   <div id="timer"></div><br>
   <a class="ch" id="chl" target="_blank">📢 Hamara WhatsApp Channel Join Karo</a>
@@ -68,6 +85,14 @@ transition:transform 4s cubic-bezier(.17,.67,.12,1)}
   <button id="t2" onclick="setCat('watches')">⌚ Men Watches</button>
 </div>
 <div class="grid" id="g"></div>
+
+<section class="trust">
+  <h3>SR Brand pe bharosa kyun? 💚</h3>
+  <div>🚚 Cash on Delivery: parcel milne par payment</div>
+  <div>📲 Har sawal ka jawab WhatsApp pe</div>
+  <div>✅ Order confirm karke hi bheja jata hai</div>
+  <div>🎁 Spin karo aur discount jeeto</div>
+</section>
 
 <!-- Order -->
 <div id="mo" class="modal"><div class="box">
@@ -142,10 +167,10 @@ transition:transform 4s cubic-bezier(.17,.67,.12,1)}
 const WA="923056353003";
 const CHANNEL="https://whatsapp.com/channel/0029Vb99ZlG0bIdiyom1K73D";
 const NUM_SHOW="0305-6353003";
-const STORE="Lahore Deals";
+const STORE="SR Brand";
 const PIN="1234"; // apna PIN badal lo
 const PRIZES=["5% OFF","Free Delivery","Rs 100 OFF","10% OFF","Free Gift 🎁","Rs 200 OFF"]; // 6 hi rakhna
-const FB=null; // Firebase config yahan paste karna (neeche steps me bataya hai)
+const FB=null; // Firebase config yahan paste karna
 // ======================
 
 let db=null;
@@ -226,7 +251,7 @@ function tick(){
   timer.textContent="⏰ Offer khatam: "+f(Math.floor(s/3600))+":"+f(Math.floor(s%3600/60))+":"+f(s%60);
 }
 setInterval(tick,1000);tick();
-sh.onclick=e=>{e.preventDefault();location.href="https://wa.me/?text="+encodeURIComponent("🔥 Yeh store dekho, kamaal deals aur spin karke discount jeeto: "+location.href)};
+sh.onclick=e=>{e.preventDefault();location.href="https://wa.me/?text="+encodeURIComponent("🔥 SR Brand ka store dekho, kamaal deals aur spin karke discount jeeto: "+location.href)};
 
 // ---------- 3D viewer ----------
 let ang=0,drag=false,lx=0,raf=0;
@@ -275,7 +300,7 @@ async function del(id){
 // ---------- caption + video ----------
 function caption(x){
   const tag=x.c=="watches"?"#menwatches #watchesinpakistan #luxurywatch #markaz":"#ladiessuits #pakistanifashion #lawnsuit #markaz";
-  return `🔥 ${x.n}\n💰 Sirf Rs ${x.p}${x.o>x.p?" (Purani price "+x.o+")":""}\n🚚 Cash on Delivery - poore Pakistan me\n📲 Order: WhatsApp ${NUM_SHOW}\n🔗 ${location.href}\n\n${tag} #onlineshoppingpakistan #dropshipping #fyp`;
+  return `🔥 ${x.n}\n💰 Sirf Rs ${x.p}${x.o>x.p?" (Purani price "+x.o+")":""}\n🚚 Cash on Delivery - poore Pakistan me\n📲 Order: WhatsApp ${NUM_SHOW}\n🔗 ${location.href}\n\n#SRBrand ${tag} #onlineshoppingpakistan #dropshipping #fyp`;
 }
 const loadI=u=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=u});
 function cover(c,im,w,h,sc){const r=Math.max(w/im.width,h/im.height)*sc,dw=im.width*r,dh=im.height*r;c.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh)}
@@ -287,7 +312,7 @@ function frame(c,ims,x,t,D){
   const gr=c.createLinearGradient(0,650,0,H);gr.addColorStop(0,"#0000");gr.addColorStop(1,"#000e");c.fillStyle=gr;c.fillRect(0,650,W,H-650);
   const k=Math.min(1,t/.8),e=1-Math.pow(1-k,3);
   c.globalAlpha=e;c.textAlign="center";
-  c.fillStyle="#fff";c.font="bold 34px sans-serif";c.fillText("🔥 "+STORE,W/2,90);
+  c.fillStyle="#fff";c.font="bold 38px sans-serif";c.fillText("🔥 "+STORE.toUpperCase(),W/2,90);
   c.font=`bold ${x.n.length<22?56:40}px sans-serif`;c.fillText(x.n,W/2,880+(1-e)*80);
   c.fillStyle="#2cff8f";c.font="bold 84px sans-serif";c.fillText("Rs "+x.p,W/2,985+(1-e)*80);
   if(x.o>x.p){c.fillStyle="#bbb";c.font="38px sans-serif";c.fillText("Purani: Rs "+x.o,W/2,1040+(1-e)*80);
