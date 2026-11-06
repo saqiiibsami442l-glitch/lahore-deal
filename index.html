@@ -1,1 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lahore Deals Store</title>
+<style>
+:root{--g:#0b8f5a;--d:#111;--r:#ff3d57}
+*{box-sizing:border-box;margin:0;font-family:system-ui,sans-serif}
+body{background:#f6f6f6;color:var(--d);padding-bottom:70px}
+header{background:linear-gradient(135deg,#111,#3a0ca3);color:#fff;padding:20px 16px;text-align:center}
+header h1{font-size:24px;user-select:none}
+header p{opacity:.85;margin-top:4px;font-size:14px}
+#timer{margin:10px 6px 0;background:var(--r);display:inline-block;padding:6px 14px;border-radius:20px;font-weight:700;font-size:14px}
+.ch{display:inline-block;margin-top:10px;background:#25d366;color:#fff;padding:7px 14px;border-radius:20px;font-weight:700;text-decoration:none;font-size:14px}
+.tabs{display:flex;gap:8px;padding:12px;position:sticky;top:0;background:#f6f6f6;z-index:5}
+.tabs button{flex:1;padding:11px;border:0;border-radius:10px;background:#fff;font-weight:700}
+.tabs button.on{background:var(--d);color:#fff}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 12px}
+.empty{grid-column:1/3;text-align:center;padding:40px 10px;color:#666}
+.card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px #0001;transition:transform .2s}
+.media{position:relative;aspect-ratio:3/4;background:#ddd;overflow:hidden}
+.media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .8s;animation:zoom 6s infinite alternate}
+.media img.show{opacity:1}
+@keyframes zoom{to{transform:scale(1.13)}}
+.badge{position:absolute;top:8px;left:8px;background:var(--r);color:#fff;font-size:12px;padding:3px 8px;border-radius:8px;z-index:2}
+.info{padding:10px}
+.info h3{font-size:14px;min-height:36px}
+.price{margin:4px 0 8px}
+.price b{color:var(--g);font-size:17px}
+.price s{color:#888;font-size:13px;margin-left:6px}
+.row{display:flex;gap:6px}
+.buy{width:100%;padding:11px;border:0;border-radius:10px;background:#25d366;color:#fff;font-weight:700;font-size:15px}
+.b3{padding:11px 12px;border:0;border-radius:10px;background:#3a0ca3;color:#fff;font-weight:700}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:20;align-items:center;justify-content:center;padding:14px;overflow:auto}
+.box{background:#fff;border-radius:16px;padding:18px;width:100%;max-width:400px;text-align:center;max-height:96vh;overflow:auto}
+.box input,.box textarea,.box select{width:100%;padding:11px;margin:5px 0;border:1px solid #ccc;border-radius:10px;font-size:15px}
+.x{margin-top:8px;background:none;border:0;color:#777;padding:8px;font-size:14px}
+#wheel{width:230px;height:230px;border-radius:50%;margin:14px auto;border:6px solid #111;position:relative;
+background:conic-gradient(#ff3d57 0 60deg,#ffd166 0 120deg,#06d6a0 0 180deg,#4361ee 0 240deg,#f72585 0 300deg,#ff9f1c 0 360deg);
+transition:transform 4s cubic-bezier(.17,.67,.12,1)}
+#wheel span{position:absolute;left:50%;top:50%;width:80px;margin-left:-40px;margin-top:-8px;font-size:11px;font-weight:800;color:#111;text-align:center;transform-origin:center}
+#pin{font-size:30px;margin-bottom:-26px;position:relative;z-index:2}
+.bar{position:fixed;bottom:0;left:0;right:0;display:flex;z-index:10}
+.bar a{flex:1;text-align:center;padding:15px 6px;font-weight:700;color:#fff;text-decoration:none;font-size:14px}
+.stage{perspective:800px;height:330px;display:flex;align-items:center;justify-content:center;touch-action:none}
+.obj{width:200px;height:280px;transform-style:preserve-3d;position:relative}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px #0008}
+.face img{width:100%;height:100%;object-fit:cover}
+.fb{transform:rotateY(180deg)}
+.adm .it{display:flex;gap:8px;align-items:center;border-bottom:1px solid #eee;padding:6px 0;text-align:left;font-size:13px}
+.adm .it img{width:44px;height:56px;object-fit:cover;border-radius:6px}
+.adm .it div{flex:1}
+.sm{padding:7px 9px;border:0;border-radius:8px;background:#eee;font-size:12px;font-weight:700}
+.sm.r{background:#ffd6dc}
+</style>
+</head>
+<body>
+<header>
+  <h1 id="logo">🔥 Lahore Deals Store</h1>
+  <p>Ladies Collection & Men Watches • Cash on Delivery</p>
+  <div id="timer"></div><br>
+  <a class="ch" id="chl" target="_blank">📢 Hamara WhatsApp Channel Join Karo</a>
+</header>
 
+<div class="tabs">
+  <button id="t1" class="on" onclick="setCat('ladies')">👗 Ladies</button>
+  <button id="t2" onclick="setCat('watches')">⌚ Men Watches</button>
+</div>
+<div class="grid" id="g"></div>
+
+<!-- Order -->
+<div id="mo" class="modal"><div class="box">
+  <h3 id="mt"></h3>
+  <p id="mp" style="color:#0b8f5a;margin:6px 0"></p>
+  <input id="nm" placeholder="Aap ka naam">
+  <input id="ct" placeholder="Shehar">
+  <textarea id="ad" rows="2" placeholder="Poora address"></textarea>
+  <button class="buy" onclick="send()">WhatsApp pe Order Confirm Karo ✅</button>
+  <button class="x" onclick="mo.style.display='none'">Cancel</button>
+</div></div>
+
+<!-- Spin -->
+<div id="so" class="modal"><div class="box">
+  <h2>🎁 Spin & Win!</h2>
+  <p>Ghumao aur apna discount jeeto</p>
+  <div id="pin">▼</div>
+  <div id="wheel"></div>
+  <button class="buy" id="sb" onclick="spin()">SPIN KARO 🎡</button>
+  <button class="x" onclick="so.style.display='none'">Baad me</button>
+</div></div>
+
+<!-- 3D viewer -->
+<div id="v3" class="modal"><div class="box" style="background:#111;color:#fff">
+  <h3 id="v3t"></h3>
+  <div class="stage" id="stage"><div class="obj" id="obj">
+    <div class="face"><img id="v3a"></div>
+    <div class="face fb"><img id="v3b"></div>
+  </div></div>
+  <p style="font-size:13px;opacity:.8">👆 Ungli se ghumao</p>
+  <button class="buy" id="v3o" style="margin-top:8px">🛒 Order Karo</button>
+  <button class="x" style="color:#bbb" onclick="close3()">Band karo</button>
+</div></div>
+
+<!-- Admin -->
+<div id="ao" class="modal"><div class="box adm">
+  <h3>🔐 Admin Panel</h3>
+  <select id="ac"><option value="ladies">👗 Ladies</option><option value="watches">⌚ Men Watches</option></select>
+  <input id="an" placeholder="Product ka naam">
+  <input id="ap" type="number" placeholder="Sale price (Rs)">
+  <input id="aop" type="number" placeholder="Purani price (optional)">
+  <input id="af" type="file" accept="image/*" multiple>
+  <small style="color:#777">1 se 3 photos chuno</small>
+  <button class="buy" id="aadd" style="margin-top:8px" onclick="addP()">➕ Product Add Karo</button>
+  <div id="al" style="margin-top:12px"></div>
+  <button class="x" onclick="ao.style.display='none'">Band karo</button>
+</div></div>
+
+<!-- Video / caption -->
+<div id="vo" class="modal"><div class="box">
+  <h3 id="vt">🎬 Video</h3>
+  <p id="vs" style="margin:8px 0;font-size:14px"></p>
+  <video id="vv" controls playsinline style="width:100%;border-radius:12px;display:none"></video>
+  <div id="vb" style="display:none">
+    <button class="buy" onclick="dlV()">⬇️ Video Download</button>
+    <button class="buy" style="background:#3a0ca3;margin-top:6px" onclick="shV()">📤 Share (TikTok/WhatsApp)</button>
+  </div>
+  <textarea id="vc" rows="7" style="margin-top:10px"></textarea>
+  <button class="buy" style="background:#111" onclick="vc.select();document.execCommand('copy');this.textContent='Copy ho gaya ✅'">📋 Caption Copy</button>
+  <button class="x" onclick="vo.style.display='none'">Band karo</button>
+</div></div>
+
+<div class="bar">
+  <a style="background:#111" id="sh" href="#">📤 Dost ko bhejo</a>
+  <a style="background:#25d366" id="chl2" target="_blank">📢 Channel</a>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+// ====== SETTINGS ======
+const WA="923056353003";
+const CHANNEL="https://whatsapp.com/channel/0029Vb99ZlG0bIdiyom1K73D";
+const NUM_SHOW="0305-6353003";
+const STORE="Lahore Deals";
+const PIN="1234"; // apna PIN badal lo
+const PRIZES=["5% OFF","Free Delivery","Rs 100 OFF","10% OFF","Free Gift 🎁","Rs 200 OFF"]; // 6 hi rakhna
+const FB=null; // Firebase config yahan paste karna (neeche steps me bataya hai)
+// ======================
+
+let db=null;
+if(FB&&window.firebase){firebase.initializeApp(FB);db=firebase.firestore()}
+let P=[],cat="ladies",cur=null,prize="";
+try{prize=localStorage.getItem("prize")||""}catch(e){}
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const okImg=s=>typeof s==="string"&&s.startsWith("data:image/");
+chl.href=CHANNEL;chl2.href=CHANNEL;
+
+// ---------- data ----------
+function load(){
+  if(db){db.collection("products").orderBy("t","desc").onSnapshot(s=>{P=s.docs.map(d=>({id:d.id,...d.data()}));render();rAdmin()})}
+  else{try{P=JSON.parse(localStorage.getItem("P")||"[]")}catch(e){P=[]}render()}
+}
+function saveLocal(){try{localStorage.setItem("P",JSON.stringify(P))}catch(e){alert("Phone ki memory full hai, kuch products delete karo")}}
+
+// ---------- render ----------
+function setCat(c){cat=c;t1.className=c=="ladies"?"on":"";t2.className=c=="watches"?"on":"";render()}
+function render(){
+  const L=P.filter(x=>x.c==cat);
+  if(!L.length){g.innerHTML='<div class="empty">Naye products jaldi aa rahe hain 🔜<br>Hamara channel join karo!</div>';return}
+  g.innerHTML=L.map(x=>{
+    const im=(x.i||[]).filter(okImg);
+    const off=x.o>x.p?`<span class="badge">-${Math.round((1-x.p/x.o)*100)}%</span>`:"";
+    return `<div class="card"><div class="media">${off}${im.map((s,j)=>`<img src="${s}" class="${j?'':'show'}">`).join("")}</div>
+    <div class="info"><h3>${esc(x.n)}</h3><div class="price"><b>Rs ${+x.p}</b>${x.o>x.p?`<s>${+x.o}</s>`:""}</div>
+    <div class="row"><button class="buy" data-o="${x.id}">🛒 Order</button><button class="b3" data-3="${x.id}">3D</button></div></div></div>`;
+  }).join("");
+}
+g.addEventListener("click",e=>{
+  const o=e.target.closest("[data-o]"),d=e.target.closest("[data-3]");
+  if(o)openO(o.dataset.o);if(d)open3(d.dataset["3"]);
+});
+setInterval(()=>document.querySelectorAll(".media").forEach(m=>{
+  const im=[...m.querySelectorAll("img")];if(im.length<2)return;
+  const a=im.findIndex(i=>i.classList.contains("show"));
+  im[a].classList.remove("show");im[(a+1)%im.length].classList.add("show");
+}),3000);
+// tilt
+g.addEventListener("pointermove",e=>{
+  const c=e.target.closest(".card");if(!c)return;
+  const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+  c.style.transform=`perspective(600px) rotateY(${x*14}deg) rotateX(${-y*14}deg)`;
+});
+["pointerup","pointercancel","pointerleave"].forEach(ev=>g.addEventListener(ev,()=>document.querySelectorAll(".card").forEach(c=>c.style.transform="")));
+
+// ---------- order ----------
+const find=id=>P.find(x=>x.id==id);
+function openO(id){cur=find(id);if(!cur)return;mt.textContent=cur.n;mp.textContent="Rs "+cur.p+" • Cash on Delivery"+(prize?" • 🎁 "+prize:"");mo.style.display="flex"}
+function send(){
+  if(!nm.value||!ct.value||!ad.value)return alert("Naam, shehar aur address likhein");
+  const t=`Assalam o Alaikum! Mujhe order karna hai:\n🛍 ${cur.n}\n💰 Rs ${cur.p} (Cash on Delivery)\n${prize?"🎁 Prize: "+prize+"\n":""}👤 ${nm.value}\n📍 ${ct.value}\n🏠 ${ad.value}`;
+  location.href="https://wa.me/"+WA+"?text="+encodeURIComponent(t);
+}
+
+// ---------- spin ----------
+PRIZES.forEach((p,i)=>{const s=document.createElement("span");s.textContent=p;s.style.transform=`rotate(${i*60+30}deg) translateY(-78px)`;wheel.appendChild(s)});
+function spin(){
+  sb.disabled=true;
+  const R=360*5+Math.floor(Math.random()*360);
+  wheel.style.transform=`rotate(${R}deg)`;
+  setTimeout(()=>{
+    prize=PRIZES[Math.floor(((360-R%360)%360)/60)];
+    try{localStorage.setItem("spun","1");localStorage.setItem("prize",prize)}catch(e){}
+    sb.textContent="🎉 Mubarak! "+prize;
+    setTimeout(()=>so.style.display="none",2500);
+  },4200);
+}
+let spun=false;try{spun=localStorage.getItem("spun")}catch(e){}
+if(!spun)setTimeout(()=>so.style.display="flex",3000);
+
+// ---------- countdown ----------
+function tick(){
+  const n=new Date(),e=new Date();e.setHours(23,59,59,0);
+  const s=Math.max(0,Math.floor((e-n)/1000)),f=v=>String(v).padStart(2,"0");
+  timer.textContent="⏰ Offer khatam: "+f(Math.floor(s/3600))+":"+f(Math.floor(s%3600/60))+":"+f(s%60);
+}
+setInterval(tick,1000);tick();
+sh.onclick=e=>{e.preventDefault();location.href="https://wa.me/?text="+encodeURIComponent("🔥 Yeh store dekho, kamaal deals aur spin karke discount jeeto: "+location.href)};
+
+// ---------- 3D viewer ----------
+let ang=0,drag=false,lx=0,raf=0;
+function open3(id){
+  const x=find(id);if(!x)return;const im=(x.i||[]).filter(okImg);
+  v3t.textContent=x.n;v3a.src=im[0]||"";v3b.src=im[1]||im[0]||"";
+  v3o.onclick=()=>{close3();openO(id)};v3.style.display="flex";
+  cancelAnimationFrame(raf);
+  (function loop(){if(!drag)ang+=.7;obj.style.transform=`rotateY(${ang}deg) rotateX(-6deg)`;raf=requestAnimationFrame(loop)})();
+}
+function close3(){cancelAnimationFrame(raf);v3.style.display="none"}
+stage.addEventListener("pointerdown",e=>{drag=true;lx=e.clientX});
+stage.addEventListener("pointermove",e=>{if(drag){ang+=(e.clientX-lx)*.8;lx=e.clientX}});
+["pointerup","pointercancel","pointerleave"].forEach(ev=>stage.addEventListener(ev,()=>drag=false));
+
+// ---------- admin ----------
+let taps=0,tt;
+logo.onclick=()=>{taps++;clearTimeout(tt);tt=setTimeout(()=>taps=0,1500);
+  if(taps>=5){taps=0;if(prompt("Admin PIN:")===PIN){ao.style.display="flex";rAdmin()}}};
+function rs(f){return new Promise(r=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{
+  const s=Math.min(1,700/Math.max(im.width,im.height)),c=document.createElement("canvas");
+  c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);r(c.toDataURL("image/jpeg",.72))};im.src=fr.result};fr.readAsDataURL(f)})}
+async function addP(){
+  const n=an.value.trim(),p=+ap.value,o=+aop.value||0,fl=[...af.files].slice(0,3);
+  if(!n||!p||!fl.length)return alert("Naam, price aur kam az kam 1 photo zaroori hai");
+  aadd.disabled=true;aadd.textContent="Upload ho raha hai...";
+  const i=await Promise.all(fl.map(rs));
+  const obj={n,c:ac.value,p,o,i,t:Date.now()};
+  try{
+    if(db){await db.collection("products").add(obj)}
+    else{obj.id=String(Date.now());P.unshift(obj);saveLocal();render();rAdmin()}
+    an.value=ap.value=aop.value=af.value="";
+  }catch(e){alert("Error: "+e.message)}
+  aadd.disabled=false;aadd.textContent="➕ Product Add Karo";
+}
+function rAdmin(){
+  al.innerHTML=P.map(x=>`<div class="it"><img src="${okImg((x.i||[])[0])?x.i[0]:""}"><div><b>${esc(x.n)}</b><br>Rs ${+x.p}</div>
+  <button class="sm" onclick="mk('${x.id}')">🎬 Video</button><button class="sm r" onclick="del('${x.id}')">🗑</button></div>`).join("")||"<p style='color:#777'>Abhi koi product nahi</p>";
+}
+async function del(id){
+  if(!confirm("Delete karna hai?"))return;
+  if(db)await db.collection("products").doc(id).delete();
+  else{P=P.filter(x=>x.id!=id);saveLocal();render();rAdmin()}
+}
+
+// ---------- caption + video ----------
+function caption(x){
+  const tag=x.c=="watches"?"#menwatches #watchesinpakistan #luxurywatch #markaz":"#ladiessuits #pakistanifashion #lawnsuit #markaz";
+  return `🔥 ${x.n}\n💰 Sirf Rs ${x.p}${x.o>x.p?" (Purani price "+x.o+")":""}\n🚚 Cash on Delivery - poore Pakistan me\n📲 Order: WhatsApp ${NUM_SHOW}\n🔗 ${location.href}\n\n${tag} #onlineshoppingpakistan #dropshipping #fyp`;
+}
+const loadI=u=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=u});
+function cover(c,im,w,h,sc){const r=Math.max(w/im.width,h/im.height)*sc,dw=im.width*r,dh=im.height*r;c.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh)}
+function frame(c,ims,x,t,D){
+  const W=720,H=1280;c.fillStyle="#000";c.fillRect(0,0,W,H);
+  const seg=D/ims.length,i=Math.min(ims.length-1,Math.floor(t/seg)),l=(t-i*seg)/seg;
+  if(i>0&&l<.12)cover(c,ims[i-1],W,H,1.15);
+  c.globalAlpha=i>0?Math.min(1,l/.12):1;cover(c,ims[i],W,H,1+.15*l);c.globalAlpha=1;
+  const gr=c.createLinearGradient(0,650,0,H);gr.addColorStop(0,"#0000");gr.addColorStop(1,"#000e");c.fillStyle=gr;c.fillRect(0,650,W,H-650);
+  const k=Math.min(1,t/.8),e=1-Math.pow(1-k,3);
+  c.globalAlpha=e;c.textAlign="center";
+  c.fillStyle="#fff";c.font="bold 34px sans-serif";c.fillText("🔥 "+STORE,W/2,90);
+  c.font=`bold ${x.n.length<22?56:40}px sans-serif`;c.fillText(x.n,W/2,880+(1-e)*80);
+  c.fillStyle="#2cff8f";c.font="bold 84px sans-serif";c.fillText("Rs "+x.p,W/2,985+(1-e)*80);
+  if(x.o>x.p){c.fillStyle="#bbb";c.font="38px sans-serif";c.fillText("Purani: Rs "+x.o,W/2,1040+(1-e)*80);
+    const s=1+.06*Math.sin(t*6);c.save();c.translate(600,200);c.scale(s,s);c.fillStyle="#ff3d57";c.beginPath();c.arc(0,0,78,0,7);c.fill();
+    c.fillStyle="#fff";c.font="bold 44px sans-serif";c.fillText("-"+Math.round((1-x.p/x.o)*100)+"%",0,16);c.restore()}
+  c.fillStyle="#25d366";c.fillRect(60,1100,600,92);
+  c.fillStyle="#fff";c.font="bold 36px sans-serif";c.fillText("📲 Order: "+NUM_SHOW,W/2,1147);
+  c.font="28px sans-serif";c.fillText("Cash on Delivery • Link bio me",W/2,1240);
+  c.globalAlpha=1;
+}
+let vblob=null,vname="";
+async function mk(id){
+  const x=find(id);if(!x)return;
+  vo.style.display="flex";vv.style.display="none";vb.style.display="none";vc.value=caption(x);vt.textContent="🎬 "+x.n;
+  if(!window.MediaRecorder){vs.textContent="Is browser me video recording nahi hai. Chrome use karo. Caption neeche hai.";return}
+  vs.textContent="Video ban rahi hai (9 sec), ruko...";
+  const ims=await Promise.all((x.i||[]).filter(okImg).map(loadI));
+  const cv=document.createElement("canvas");cv.width=720;cv.height=1280;const c=cv.getContext("2d");
+  const mime=["video/mp4","video/webm;codecs=vp9","video/webm"].find(m=>MediaRecorder.isTypeSupported(m))||"";
+  const rec=new MediaRecorder(cv.captureStream(30),mime?{mimeType:mime,videoBitsPerSecond:3e6}:{}),ch=[];
+  rec.ondataavailable=e=>e.data.size&&ch.push(e.data);
+  rec.onstop=()=>{vblob=new Blob(ch,{type:rec.mimeType||"video/webm"});vname="video."+(vblob.type.includes("mp4")?"mp4":"webm");
+    vv.src=URL.createObjectURL(vblob);vv.style.display="block";vb.style.display="block";vs.textContent="✅ Video tayyar! Download karke TikTok pe lagao.";};
+  const D=9;rec.start();const t0=performance.now();
+  (function loop(){const t=(performance.now()-t0)/1000;if(t>=D){rec.stop();return}frame(c,ims,x,t,D);requestAnimationFrame(loop)})();
+}
+function dlV(){const a=document.createElement("a");a.href=URL.createObjectURL(vblob);a.download=vname;a.click()}
+async function shV(){
+  try{const f=new File([vblob],vname,{type:vblob.type});
+    if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:vc.value});else dlV();}catch(e){}
+}
+load();
+</script>
+</body>
+</html>
