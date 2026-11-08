@@ -9,7 +9,7 @@
 <meta property="og:title" content="SR Brand - Ladies Suits & Men Watches">
 <meta property="og:description" content="Cash on Delivery • Spin karke discount jeeto • WhatsApp pe order karo">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://saqiiibsami442l-glitch.github.io/lahore-deals/banner.png">
+<meta property="og:image" content="https://saqiiibsami442l-glitch.github.io/lahore-deal/banner.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpolygon points='50,6 88,28 88,72 50,94 12,72 12,28' fill='%2312062e' stroke='%23ff2e9a' stroke-width='6'/%3E%3Ctext x='50' y='62' text-anchor='middle' font-size='34' font-weight='900' fill='%2319e3ff' font-family='sans-serif'%3ESR%3C/text%3E%3C/svg%3E">
 <!-- Google Search Console wala verification tag yahan paste karna -->
@@ -131,7 +131,7 @@ transition:transform 4s cubic-bezier(.17,.67,.12,1)}
 <div id="feat"></div>
 
 <div class="sbar">
-  <input id="q" placeholder="🔍 Product dhundo...">
+  <input id="q" type="search" name="product-search" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="🔍 Product dhundo...">
   <select id="srt"><option value="new">Naye pehle</option><option value="lo">Sasta pehle</option><option value="hi">Mehnga pehle</option></select>
 </div>
 
@@ -201,7 +201,7 @@ transition:transform 4s cubic-bezier(.17,.67,.12,1)}
 <!-- Admin PIN -->
 <div id="pm" class="modal"><div class="box">
   <h3>🔐 Admin PIN</h3>
-  <input id="pi" type="password" inputmode="numeric" placeholder="PIN daalo" maxlength="8">
+  <input id="pi" type="password" name="admin-pin" autocomplete="new-password" inputmode="numeric" placeholder="PIN daalo" maxlength="8">
   <button class="buy" onclick="chkPin()">Open</button>
   <button class="x" onclick="pm.style.display='none'">Cancel</button>
 </div></div>
@@ -211,8 +211,8 @@ transition:transform 4s cubic-bezier(.17,.67,.12,1)}
   <h3>🔐 Admin Panel</h3>
   <div id="alog" style="display:none">
     <p style="font-size:13px;margin:8px 0;color:var(--mut)">Firebase me jo admin email/password banaya wo daalo</p>
-    <input id="le" type="email" placeholder="Admin email">
-    <input id="lp" type="password" placeholder="Password">
+    <input id="le" type="email" name="admin-email" autocomplete="username" placeholder="Admin email">
+    <input id="lp" type="password" name="admin-pass" autocomplete="current-password" placeholder="Password">
     <button class="buy" onclick="login()">Login</button>
   </div>
   <div id="apan">
@@ -300,7 +300,14 @@ const STORE="SR Brand";
 const PIN="2580";
 const PRIZES=["5% OFF","Free Delivery","Rs 100 OFF","10% OFF","Free Gift 🎁","Rs 200 OFF"]; // 6 hi rakhna
 const SOC={tiktok:"",instagram:"",facebook:""}; // apne profile ke poore links "" me daalo
-const FB=null; // Firebase config yahan paste karna
+const FB={
+  apiKey:"AIzaSyB14Frl4ULsfUpRnq_9VcGpuFV0iTFwGSk",
+  authDomain:"sr-brand-818a9.firebaseapp.com",
+  projectId:"sr-brand-818a9",
+  storageBucket:"sr-brand-818a9.firebasestorage.app",
+  messagingSenderId:"1061073882376",
+  appId:"1:1061073882376:web:817b7f9f24dbf8c42c70bd"
+};
 // ======================
 
 const $=id=>document.getElementById(id);
@@ -317,8 +324,8 @@ sh.href="https://wa.me/?text="+encodeURIComponent("🔥 SR Brand ka store dekho,
 // ---------- data ----------
 function load(){
   if(db){
-    db.collection("products").orderBy("t","desc").onSnapshot(s=>{P=s.docs.map(d=>({id:d.id,...d.data()}));render();rAdmin()});
-    db.collection("reviews").orderBy("t","desc").onSnapshot(s=>{R=s.docs.map(d=>({id:d.id,...d.data()}));rRev();rAdmin()});
+    db.collection("products").orderBy("t","desc").onSnapshot(s=>{P=s.docs.map(d=>({id:d.id,...d.data()}));render();rAdmin()},e=>console.log(e));
+    db.collection("reviews").orderBy("t","desc").onSnapshot(s=>{R=s.docs.map(d=>({id:d.id,...d.data()}));rRev();rAdmin()},e=>console.log(e));
   }else{
     try{P=JSON.parse(localStorage.getItem("P")||"[]");R=JSON.parse(localStorage.getItem("R")||"[]");O=JSON.parse(localStorage.getItem("O")||"[]");C=JSON.parse(localStorage.getItem("C")||"{}")}catch(e){}
     render();rRev();
@@ -624,6 +631,7 @@ async function shV(){
   try{const f=new File([vblob],vname,{type:vblob.type});
     if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:vc.value});else dlV();}catch(e){}
 }
+setTimeout(()=>{if(q.value.includes("@")){q.value="";render()}},800);
 load();
 </script>
 </body>
