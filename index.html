@@ -282,7 +282,8 @@ body.hc .fab,body.hc .sfab{bottom:84px}
   <form id="alog" style="display:none" onsubmit="return login(event)">
     <p style="font-size:13px;margin:8px 0;color:var(--mut)">Sign in with the admin email and password you created in Firebase</p>
     <input id="le" type="email" name="admin-email" autocomplete="username" placeholder="Admin email">
-    <input id="lp" type="password" name="admin-pass" autocomplete="current-password" placeholder="Password">
+   <input id="lp" type="password" name="admin-pass" autocomplete="current-password" placeholder="Password">
+<label style="display:flex;gap:8px;align-items:center;font-size:13px;margin:4px 0"><input type="checkbox" style="width:auto;margin:0" onclick="lp.type=this.checked?'text':'password'"> Show password</label>
     <button class="buy" type="submit">Login</button>
   </form>
   <div id="apan">
